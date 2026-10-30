@@ -48,7 +48,7 @@ The panel only listens on 127.0.0.1 and only writes module files and EAS profile
 3. **Images** – upload icon, adaptive icon, splash and logo.
 4. **Firebase** – create a Firebase project for the shop, enable *Phone* sign-in and Cloud Messaging, add an Android app with the shop's package id, download `google-services.json` and upload it. For web push, add a web app and save its `firebaseConfig` as `firebase-web.json`. Optionally add the iOS app and `GoogleService-Info.plist`.
 5. **Backend** – create a database (Supabase project) with the same schema as an existing shop, deploy `backend/` to a new server with the `.env` from `npm run shop -- env <id>` (fill the secrets in the hosting dashboard), then put the server's URL in *Backend API URL*.
-6. **Expo project** – `cd mobile`, then `SHOP=<id> npx eas-cli init` (PowerShell: `$env:SHOP='<id>'; npx eas-cli init`) and copy the printed project id into *Expo projectId* (set *Expo owner* to your Expo account first).
+6. **Expo project** – `cd mobile`, then `SHOP=<id> npx eas-cli init` (PowerShell: `$env:SHOP='<id>'; npx eas-cli init`) and copy the printed project id into *Expo projectId* (set *Expo owner* to your Expo account first). `eas init` also writes the shop's settings into the shared `mobile/app.json`: undo that with `git checkout mobile/app.json`.
 7. **Build** – once the checklist shows no problems: panel → *Start EAS build*, or `npm run shop -- build <id> production android`.
 8. **Web admin site (optional)** – deploy `mobile/` to Vercel with the environment variable `SHOP=<id>`.
 

@@ -1,0 +1,43 @@
+{
+  "id": "meri-dawai",
+  "name": "Meri Dawai",
+  "nameHi": "मेरी दवाई",
+  "tagline": "Branded generic medicines. Save up to 80% on your medicine bill",
+  "taglineHi": "ब्रांडेड जेनेरिक दवाइयाँ, दवा के बिल पर 80% तक बचत",
+  "invoiceTagline": "Generic Pharmacy · Save up to 80% on medicine bill",
+  "apiUrl": "",
+  "app": {
+    "version": "1.0.0",
+    "scheme": "meridawai",
+    "androidPackage": "com.meridawai.app",
+    "iosBundleId": ""
+  },
+  "expo": {
+    "slug": "meri-dawai",
+    "owner": "bharti1s-team",
+    "projectId": "f1ee32f7-d9f3-403e-97ca-e538cf444a96"
+  },
+  "splashBackground": "#FFFFFF",
+  "theme": {
+    "primary": "#E5533D",
+    "primaryDark": "#B23A26",
+    "primaryLight": "#F8A595",
+    "navy": "#3A1D16",
+    "text": "#1F1A18",
+    "secondary": "#6B5A55",
+    "muted": "#A08F8A",
+    "card": "#FFF1EE",
+    "cardDeep": "#FFE1DA",
+    "cardBorder": "#F9D3CA",
+    "border": "#F1DAD4",
+    "tint": "#FFF7F5",
+    "onPrimaryMuted": "#FFE2DB",
+    "toggleOff": "#E3CFCA",
+    "green": "#00A693",
+    "greenBg": "#DDF5F1",
+    "red": "#D92D20",
+    "redBg": "#FDECEA",
+    "amber": "#B54708",
+    "amberBg": "#FEF0C7"
+  }
+}

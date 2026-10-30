@@ -39,6 +39,18 @@
       "env": {
         "SHOP": "kamal-medical-hall"
       }
+    },
+    "meri-dawai-preview": {
+      "extends": "preview",
+      "env": {
+        "SHOP": "meri-dawai"
+      }
+    },
+    "meri-dawai-production": {
+      "extends": "production",
+      "env": {
+        "SHOP": "meri-dawai"
+      }
     }
   }
 }
