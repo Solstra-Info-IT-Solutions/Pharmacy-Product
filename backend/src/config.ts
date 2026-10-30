@@ -11,7 +11,30 @@ function bundledSupabaseCa() {
 }
 
 const env: Record<string, string | undefined> = Object.fromEntries(Object.entries(process.env).map(([k, v]) => [k, v?.trim()]));
+
+/**
+ * The shop this server runs for. Every shop has its own server and database; SHOP (or shops/default) picks its module
+ * in shops/<id>/ for the name, colours and logo printed on invoices and notifications.
+ */
+function loadShop() {
+  const shopsDir = fileURLToPath(new URL('../../shops/', import.meta.url));
+  const defaultFile = shopsDir + 'default';
+  const id = env.SHOP || (existsSync(defaultFile) ? readFileSync(defaultFile, 'utf8').trim() : '');
+  const file = `${shopsDir}${id}/shop.json`;
+  if (!id || !existsSync(file)) throw new Error(`SHOP must name a shop module in shops/ (got "${id}")`);
+  const s = JSON.parse(readFileSync(file, 'utf8').replace(/^﻿/, ''));
+  const logo = `${shopsDir}${id}/assets/logo.png`;
+  return {
+    id,
+    name: String(s.name ?? id),
+    invoiceTagline: String(s.invoiceTagline ?? ''),
+    primary: String(s.theme?.primary ?? '#0B5ED7'),
+    navy: String(s.theme?.navy ?? '#0F2147'),
+    logoPath: existsSync(logo) ? logo : null,
+  };
+}
 export const config = {
+  shop: loadShop(),
   isProd: env.NODE_ENV === 'production',
   port: Number(env.PORT ?? 4000),
   databaseUrl: env.DATABASE_URL ?? '',

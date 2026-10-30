@@ -33,6 +33,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLayout } from '../layout';
 import { useCart } from '../store/cart';
 import { useSession } from '../store/session';
+import { shop } from '../shop';
 import { colors, fonts } from '../theme';
 import { navigationRef } from './ref';
 import type { AdminStackParamList, AdminTabParamList, AuthStackParamList, CustomerStackParamList, CustomerTabParamList, PartnerStackParamList, PartnerTabParamList } from './types';
@@ -228,7 +229,7 @@ function CustomerGate() {
   return needsName ? <SignupScreen /> : <CustomerNavigator />;
 }
 
-const linking: LinkingOptions<object> = { prefixes: ['kamalmedicalhall://'] };
+const linking: LinkingOptions<object> = { prefixes: [`${shop.scheme}://`] };
 
 export function Navigation() {
   const status = useSession((s) => s.status);

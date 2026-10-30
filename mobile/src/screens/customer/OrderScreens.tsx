@@ -23,6 +23,7 @@ import { useContentStyle } from '../../layout';
 import { useLoad } from '../../hooks';
 import type { CustomerStackParamList, CustomerTabParamList } from '../../navigation/types';
 import { useSession } from '../../store/session';
+import { shop } from '../../shop';
 import { colors, radius, spacing, type } from '../../theme';
 import { formatDate, formatDateTime, formatMoney, istDate, statusTone , formatDelivery } from '../../utils';
 import { DateField } from '../../components/Calendar';
@@ -355,7 +356,7 @@ export function PaymentScreen({ navigation, route }: NativeStackScreenProps<Cust
         const Razorpay = (require('react-native-razorpay') as { default: { open(o: object): Promise<{ razorpay_payment_id: string; razorpay_order_id: string; razorpay_signature: string }> } }).default;
         let result;
         try {
-          result = await Razorpay.open({ key: res.razorpay.keyId, amount: res.razorpay.amount, currency: res.razorpay.currency, order_id: res.razorpay.orderId, name: 'Kamal Medical Hall', description: `#${o.orderNumber}`, prefill: { contact: phone }, theme: { color: colors.primary } });
+          result = await Razorpay.open({ key: res.razorpay.keyId, amount: res.razorpay.amount, currency: res.razorpay.currency, order_id: res.razorpay.orderId, name: shop.name, description: `#${o.orderNumber}`, prefill: { contact: phone }, theme: { color: colors.primary } });
         } catch (e) {
           // Razorpay code 2 = the customer closed the sheet; anything else is a real failure worth showing. Either way the order stays "awaiting payment" and can be paid again.
           const f = e as { code?: number; description?: string; error?: { description?: string } };
@@ -377,7 +378,7 @@ export function PaymentScreen({ navigation, route }: NativeStackScreenProps<Cust
   return (
     <Screen footer={<Button title={method === 'cod' ? t('pay.confirmCod') : t('pay.payNow', { amount: formatMoney(o.quotedAmount ?? 0) })} icon={method === 'cod' ? 'checkmark' : 'lock-closed'} onPress={pay} loading={busy} />}>
       <Enter index={0}>
-        <LinearGradient colors={[colors.card, '#D5E7FB']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={s.amountCard}>
+        <LinearGradient colors={[colors.card, colors.cardDeep]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={s.amountCard}>
           <Text style={[type.small, { color: colors.secondary }]}>{t('order.amount')} · #{o.orderNumber}</Text>
           <CountUp value={o.quotedAmount ?? 0} prefix="₹" style={[type.h1, { color: colors.text, fontSize: 40, lineHeight: 54 }]} />
           <View style={s.row}><Icon name="bicycle" size={16} color={colors.green} /><Text style={[type.small, { color: colors.green }]}>{t('cart.freeDelivery')}</Text></View>

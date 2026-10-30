@@ -15,9 +15,8 @@ import { endpoints } from '../../api/endpoints';
 import { showDialog } from '../../dialog';
 import type { AuthStackParamList } from '../../navigation/types';
 import { useSession } from '../../store/session';
+import { shop, shopLogo as logo } from '../../shop';
 import { colors, fonts, radius, spacing, type } from '../../theme';
-
-const logo = require('../../../assets/logo.png');
 
 export function WelcomeScreen({ navigation }: NativeStackScreenProps<AuthStackParamList, 'Welcome'>) {
   const { t } = useTranslation();
@@ -25,7 +24,7 @@ export function WelcomeScreen({ navigation }: NativeStackScreenProps<AuthStackPa
   return (
     <SafeAreaView style={s.fill}>
       <View style={s.welcomeTop}>
-        <Animated.View entering={ZoomIn.duration(700).springify().damping(12)}><Image source={logo} style={s.welcomeLogo} resizeMode="contain" accessibilityLabel="Kamal Medical Hall" /></Animated.View>
+        <Animated.View entering={ZoomIn.duration(700).springify().damping(12)}><Image source={logo} style={s.welcomeLogo} resizeMode="contain" accessibilityLabel={shop.name} /></Animated.View>
         <Animated.Text entering={FadeInDown.delay(300).duration(600)} style={[type.h1, s.tagline]}>{t('brand.tagline')}</Animated.Text>
         {bootError ? <Text style={[type.small, { color: colors.red, textAlign: 'center', marginTop: 8 }]}>{bootError}</Text> : null}
       </View>

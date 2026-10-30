@@ -44,7 +44,7 @@ export function CheckRow({ checked, onChange, children, error }: { checked: bool
 export const dobToIso = (v: string) => { const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(v); return m ? `${m[3]}-${m[2]}-${m[1]}` : null; };
 export const isoToDob = (v: string | null | undefined) => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v ?? ''); return m ? `${m[3]}/${m[2]}/${m[1]}` : ''; };
 
-/** Date of birth with the KMH calendar: any day from 1900 up to today (future days are disabled). Value "YYYY-MM-DD". */
+/** Date of birth with the app calendar: any day from 1900 up to today (future days are disabled). Value "YYYY-MM-DD". */
 export function DobField({ value, onChange, error }: { value: string; onChange: (v: string) => void; error?: string }) {
   const { t } = useTranslation();
   return <DateField label={t('register.dob')} value={value} onChange={(v) => onChange(v ?? '')} min="1900-01-01" max={todayIso()} placeholder={t('register.dobPick')} error={error} clearable />;

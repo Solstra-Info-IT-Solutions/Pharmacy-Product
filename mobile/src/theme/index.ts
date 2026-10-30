@@ -1,15 +1,21 @@
-/** Design tokens sampled from the supplied UI mock-ups. */
-export const colors = {
+import { shop } from '../shop';
+
+/** Default design tokens (sampled from the supplied UI mock-ups). Each shop overrides them in shops/<id>/shop.json → theme. */
+const base = {
   primary: '#0B5FDB',
   primaryDark: '#0A3E96',
+  primaryLight: '#7AB8F5',
   navy: '#0F2147',
   text: '#101C36',
   secondary: '#4F5D78',
   muted: '#8A96AB',
   border: '#D6E4F5',
   card: '#EAF4FE',
+  cardDeep: '#DCEBFB',
   cardBorder: '#CFE3F8',
   tint: '#F3F8FE',
+  onPrimaryMuted: '#DCE9FF',
+  toggleOff: '#C3D3E8',
   green: '#1B9A47',
   greenBg: '#DDF6E3',
   red: '#D92D20',
@@ -18,8 +24,12 @@ export const colors = {
   amberBg: '#FEF0C7',
   white: '#FFFFFF',
   background: '#FFFFFF',
-  backdrop: 'rgba(15,33,71,0.45)',
-} as const;
+};
+
+const brand = Object.fromEntries(Object.entries(base).map(([key, value]) => [key, shop.theme[key] ?? value])) as Record<keyof typeof base, string>;
+const rgb = (hex: string) => [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16)).join(',');
+
+export const colors = { ...brand, backdrop: `rgba(${rgb(brand.navy)},0.45)` };
 
 export const fonts = {
   regular: 'NotoSansDevanagari_400Regular',

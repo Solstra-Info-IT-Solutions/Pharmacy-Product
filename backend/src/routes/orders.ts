@@ -138,7 +138,7 @@ orders.get('/:id/invoice.pdf', async (req, res) => {
   const order = await loadOrder(oid, { id: 'system', role: 'admin', phone: '', name: null } as unknown as AuthUser);
   const s = (await pool.query('select address, phone, email from store_settings where id = 1')).rows[0];
   const images = await prescriptionImages(order.id);
-  streamInvoice(res, order, { name: 'Kamal Medical Hall', address: s?.address ?? null, phone: s?.phone ?? null, email: s?.email ?? null }, images);
+  streamInvoice(res, order, { name: config.shop.name, address: s?.address ?? null, phone: s?.phone ?? null, email: s?.email ?? null }, images);
 });
 
 orders.get('/:id', authed, async (req, res) => {

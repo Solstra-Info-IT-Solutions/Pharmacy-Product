@@ -558,7 +558,7 @@ partnerRouter.get('/orders/:id/payment-details', async (req, res) => {
   const { rows } = await pool.query('select * from store_settings where id = 1');
   const s = rows[0];
   const amount = order.quotedAmount ?? 0;
-  const upiUri = s.upi_id ? `upi://pay?pa=${encodeURIComponent(s.upi_id)}&pn=${encodeURIComponent(s.upi_name ?? 'Kamal Medical Hall')}&am=${amount.toFixed(2)}&cu=INR&tn=${encodeURIComponent(order.orderNumber)}` : null;
+  const upiUri = s.upi_id ? `upi://pay?pa=${encodeURIComponent(s.upi_id)}&pn=${encodeURIComponent(s.upi_name ?? config.shop.name)}&am=${amount.toFixed(2)}&cu=INR&tn=${encodeURIComponent(order.orderNumber)}` : null;
   res.json({ ...paymentView(s), amount, orderNumber: order.orderNumber, upiUri, configured: Boolean(s.upi_id || s.bank_account_number) });
 });
 

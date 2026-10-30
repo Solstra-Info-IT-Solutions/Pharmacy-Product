@@ -1,0 +1,43 @@
+{
+  "id": "",
+  "name": "",
+  "nameHi": "",
+  "tagline": "Your trusted partner for health",
+  "taglineHi": "आपके स्वास्थ्य का विश्वसनीय साथी",
+  "invoiceTagline": "Medicines delivered to your door",
+  "apiUrl": "",
+  "app": {
+    "version": "1.0.0",
+    "scheme": "",
+    "androidPackage": "",
+    "iosBundleId": ""
+  },
+  "expo": {
+    "slug": "",
+    "owner": "",
+    "projectId": ""
+  },
+  "splashBackground": "#FFFFFF",
+  "theme": {
+    "primary": "#0B5FDB",
+    "primaryDark": "#0A3E96",
+    "primaryLight": "#7AB8F5",
+    "navy": "#0F2147",
+    "text": "#101C36",
+    "secondary": "#4F5D78",
+    "muted": "#8A96AB",
+    "card": "#EAF4FE",
+    "cardDeep": "#DCEBFB",
+    "cardBorder": "#CFE3F8",
+    "border": "#D6E4F5",
+    "tint": "#F3F8FE",
+    "onPrimaryMuted": "#DCE9FF",
+    "toggleOff": "#C3D3E8",
+    "green": "#1B9A47",
+    "greenBg": "#DDF6E3",
+    "red": "#D92D20",
+    "redBg": "#FDECEA",
+    "amber": "#B54708",
+    "amberBg": "#FEF0C7"
+  }
+}

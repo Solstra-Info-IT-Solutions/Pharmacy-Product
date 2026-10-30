@@ -3,11 +3,16 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import en from './en/common.json';
 import hi from './hi/common.json';
+import { shop } from '../shop';
 
 const LANGUAGE_KEY = 'kmh.language';
 
 const initialization = i18n.use(initReactI18next).init({
-  resources: { en: { common: en }, hi: { common: hi } },
+  // The shop's name and tagline come from its module (shops/<id>/shop.json), not from the translation files.
+  resources: {
+    en: { common: { ...en, brand: { name: shop.name, tagline: shop.tagline || en.brand.tagline } } },
+    hi: { common: { ...hi, brand: { name: shop.nameHi, tagline: shop.taglineHi || hi.brand.tagline } } },
+  },
   lng: 'en',
   fallbackLng: 'en',
   defaultNS: 'common',

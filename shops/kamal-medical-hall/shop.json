@@ -1,0 +1,34 @@
+{
+  "id": "kamal-medical-hall",
+  "name": "Kamal Medical Hall",
+  "nameHi": "कमल मेडिकल हॉल",
+  "tagline": "Your trusted partner for health",
+  "taglineHi": "आपके स्वास्थ्य का विश्वसनीय साथी",
+  "invoiceTagline": "Medicines delivered to your door",
+  "apiUrl": "https://api.kamalmedicalhall.com",
+  "app": {
+    "version": "1.0.0",
+    "scheme": "kamalmedicalhall",
+    "androidPackage": "com.kamalmedicalhall.preview",
+    "iosBundleId": ""
+  },
+  "expo": {
+    "slug": "bharti",
+    "owner": "bharti1s-team",
+    "projectId": "9d716daf-7d85-4d9d-8f97-84f835f49a29"
+  },
+  "splashBackground": "#FFFFFF",
+  "theme": {
+    "primary": "#0B5FDB",
+    "primaryDark": "#0A3E96",
+    "primaryLight": "#7AB8F5",
+    "navy": "#0F2147",
+    "card": "#EAF4FE",
+    "cardDeep": "#DCEBFB",
+    "cardBorder": "#CFE3F8",
+    "border": "#D6E4F5",
+    "tint": "#F3F8FE",
+    "onPrimaryMuted": "#DCE9FF",
+    "toggleOff": "#C3D3E8"
+  }
+}

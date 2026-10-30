@@ -7,7 +7,7 @@ import { Tap, tick } from './motion';
 import { Button, Icon } from './ui';
 
 /**
- * The KMH calendar. Every date in the app is chosen with it.
+ * The app calendar. Every date in the app is chosen with it.
  *  - Dates are "YYYY-MM-DD" strings in local (India) time, so there is no time-zone drift.
  *  - Days outside `min`/`max` are shown faded and cannot be picked (for example the past, for an expiry date).
  *  - It opens on the chosen date, or on today (selected) when nothing is chosen yet and today is allowed.
@@ -163,7 +163,7 @@ export function CalendarModal({ visible, value, min, max, title, onSelect, onClo
 }
 
 /**
- * A form box that shows the chosen date with a calendar icon. Tapping anywhere on it opens the KMH calendar.
+ * A form box that shows the chosen date with a calendar icon. Tapping anywhere on it opens the app calendar.
  * `value`/`onChange` use "YYYY-MM-DD" (empty string or null = nothing chosen).
  */
 export function DateField({ label, value, onChange, min, max, placeholder, hint, error, clearable = false, compact = false, title, accessibilityLabel }: {

@@ -1,0 +1,12 @@
+{
+  "name": "pharmacy-platform",
+  "private": true,
+  "description": "One codebase, many shops: shop modules live in shops/<id>/ (see shops/README.md).",
+  "scripts": {
+    "shop": "node tools/shop-cli.cjs",
+    "superadmin": "node tools/superadmin/server.cjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

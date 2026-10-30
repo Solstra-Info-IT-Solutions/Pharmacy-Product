@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Super Admin · Shops</title>
+<style>
+  :root {
+    --bg: #F5F7FB; --panel: #FFFFFF; --ink: #101C36; --muted: #5B6B8A; --line: #DCE3EF; --accent: #0B5FDB;
+    --ok: #1B9A47; --okbg: #E3F6E9; --bad: #D92D20; --badbg: #FDECEA; --warn: #B54708; --warnbg: #FEF0C7;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #0E1422; --panel: #161E30; --ink: #E6ECF7; --muted: #95A3BD; --line: #2A3550; --accent: #5B9BFF;
+      --okbg: #12301F; --badbg: #3A1714; --warnbg: #3A2A10; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 14px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; background: var(--bg); color: var(--ink); }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  .app { display: grid; grid-template-columns: 280px 1fr; min-height: 100vh; }
+  aside { background: var(--panel); border-right: 1px solid var(--line); padding: 20px 14px; }
+  aside h1 { font-size: 16px; margin: 0 6px 16px; }
+  .shop-item { display: flex; gap: 10px; align-items: center; width: 100%; padding: 10px; border: 0; background: none; border-radius: 10px; cursor: pointer; text-align: left; }
+  .shop-item:hover { background: var(--bg); }
+  .shop-item.active { background: color-mix(in srgb, var(--accent) 12%, transparent); }
+  .dot { width: 26px; height: 26px; border-radius: 8px; flex: none; border: 1px solid var(--line); }
+  .shop-item small { display: block; color: var(--muted); font-size: 12px; }
+  .btn { border: 1px solid var(--line); background: var(--panel); padding: 8px 14px; border-radius: 9px; cursor: pointer; }
+  .btn:hover { border-color: var(--accent); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn:disabled { opacity: .5; cursor: not-allowed; }
+  .new-btn { width: 100%; margin-top: 12px; }
+  main { padding: 24px 28px 60px; max-width: 1100px; }
+  .head { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 18px; }
+  .head h2 { margin: 0; font-size: 22px; }
+  .pill { padding: 2px 10px; border-radius: 99px; font-size: 12px; font-weight: 600; }
+  .pill.ok { background: var(--okbg); color: var(--ok); } .pill.bad { background: var(--badbg); color: var(--bad); } .pill.warn { background: var(--warnbg); color: var(--warn); }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; margin-bottom: 16px; }
+  .card h3 { margin: 0 0 12px; font-size: 15px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px 16px; }
+  label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+  input[type=text], select, textarea { width: 100%; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); }
+  .hint { color: var(--muted); font-size: 12px; margin-top: 4px; }
+  .issues li { margin: 3px 0; } .issues .e { color: var(--bad); } .issues .w { color: var(--warn); }
+  .theme-wrap { display: grid; grid-template-columns: 1fr 260px; gap: 20px; }
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; }
+  .swatch { display: flex; align-items: center; gap: 8px; }
+  .swatch input[type=color] { width: 38px; height: 32px; padding: 0; border: 1px solid var(--line); border-radius: 6px; background: none; cursor: pointer; }
+  .swatch input[type=text] { font-family: ui-monospace, monospace; font-size: 12px; }
+  .phone { width: 240px; border-radius: 26px; border: 8px solid #1d2433; overflow: hidden; align-self: start; font-family: system-ui, sans-serif; }
+  .p-top { padding: 18px 14px 14px; color: #fff; }
+  .p-body { padding: 12px; }
+  .p-card { border-radius: 12px; padding: 10px; margin-bottom: 10px; border: 1px solid; }
+  .p-btn { border-radius: 10px; padding: 9px; text-align: center; color: #fff; font-weight: 600; margin-top: 8px; }
+  .p-row { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; font-size: 12px; }
+  .p-toggle { width: 34px; height: 20px; border-radius: 10px; position: relative; }
+  .p-toggle::after { content: ''; position: absolute; top: 3px; width: 14px; height: 14px; border-radius: 50%; background: #fff; }
+  .p-toggle.on::after { right: 3px; } .p-toggle.off::after { left: 3px; }
+  .files { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+  .file { border: 1px dashed var(--line); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+  .file .thumb { height: 96px; border-radius: 8px; background: repeating-conic-gradient(var(--line) 0 25%, transparent 0 50%) 0 0/16px 16px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .file .thumb img { max-width: 100%; max-height: 100%; }
+  .file .name { font-family: ui-monospace, monospace; font-size: 12px; }
+  pre { background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 12px; overflow: auto; font-size: 12px; max-height: 340px; white-space: pre-wrap; word-break: break-all; }
+  .row { display: flex; gap: 10px; align-items: end; flex-wrap: wrap; }
+  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 10px 18px; border-radius: 10px; opacity: 0; transition: opacity .2s; pointer-events: none; max-width: 90vw; }
+  .toast.show { opacity: 1; }
+  dialog { border: 1px solid var(--line); border-radius: 14px; background: var(--panel); color: var(--ink); width: min(520px, 92vw); padding: 20px; }
+  dialog::backdrop { background: rgba(0,0,0,.4); }
+  .empty { color: var(--muted); padding: 60px 0; text-align: center; }
+  @media (max-width: 820px) { .app { grid-template-columns: 1fr; } aside { border-right: 0; border-bottom: 1px solid var(--line); } .theme-wrap { grid-template-columns: 1fr; } main { padding: 16px; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside>
+    <h1>Shops</h1>
+    <div id="list"></div>
+    <button class="btn primary new-btn" id="newBtn">+ New shop</button>
+  </aside>
+  <main id="main"><div class="empty">Select a shop, or create a new one.</div></main>
+</div>
+
+<dialog id="newDialog">
+  <form id="newForm" method="dialog">
+    <h3 style="margin-top:0">New shop</h3>
+    <div class="grid" style="grid-template-columns:1fr">
+      <div><label>Shop name</label><input type="text" name="name" required placeholder="Sharma Pharmacy"></div>
+      <div><label>Shop id (folder name, lowercase-with-dashes)</label><input type="text" name="id" required pattern="[a-z0-9][a-z0-9-]{1,40}[a-z0-9]" placeholder="sharma-pharmacy"><div class="hint">Cannot be changed later. Package id is suggested from it.</div></div>
+      <div><label>Android package id (optional)</label><input type="text" name="androidPackage" placeholder="com.sharmapharmacy.app"></div>
+      <div><label>Backend API URL (optional, can add later)</label><input type="text" name="apiUrl" placeholder="https://api.sharmapharmacy.in"></div>
+      <div class="swatch"><input type="color" name="primary" value="#0B5FDB"><span>Brand colour</span></div>
+    </div>
+    <div class="row" style="justify-content:flex-end;margin-top:16px">
+      <button class="btn" value="cancel" formnovalidate>Cancel</button>
+      <button class="btn primary" value="ok">Create shop</button>
+    </div>
+  </form>
+</dialog>
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = (s, el = document) => el.querySelector(s);
+const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const THEME_LABELS = {
+  primary: 'Primary (buttons, header)', primaryDark: 'Primary dark (headings)', primaryLight: 'Primary light (bars)', navy: 'Navy (titles, overlay)',
+  text: 'Text', secondary: 'Secondary text', muted: 'Muted text', card: 'Card background', cardDeep: 'Card gradient end', cardBorder: 'Card border',
+  border: 'Borders', tint: 'Light tint', onPrimaryMuted: 'Faint text on primary', toggleOff: 'Switch (off)', green: 'Success', greenBg: 'Success background',
+  red: 'Error', redBg: 'Error background', amber: 'Warning', amberBg: 'Warning background',
+};
+let meta = null, current = null, detail = null, job = null;
+
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('show'), 3500); }
+
+async function api(path, opts = {}) {
+  const res = await fetch(path, { ...opts, headers: { 'x-superadmin': '1', ...(opts.json ? { 'content-type': 'application/json' } : {}), ...(opts.headers || {}) }, body: opts.json ? JSON.stringify(opts.json) : opts.body });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || res.statusText);
+  return data;
+}
+
+async function loadList() {
+  const list = await api('/api/shops');
+  $('#list').innerHTML = list.map((s) => `
+    <button class="shop-item ${s.id === current ? 'active' : ''}" data-id="${esc(s.id)}">
+      <span class="dot" style="background:${esc(s.primary)}"></span>
+      <span style="flex:1;min-width:0"><b>${esc(s.name || s.id)}</b>${s.isDefault ? ' <span class="pill ok">default</span>' : ''}<small>${esc(s.androidPackage)}</small></span>
+      <span class="pill ${s.errors ? 'bad' : s.warnings ? 'warn' : 'ok'}">${s.errors ? s.errors + ' ✗' : s.warnings ? s.warnings + ' !' : '✓'}</span>
+    </button>`).join('') || '<div class="hint" style="padding:6px">No shops yet.</div>';
+  for (const b of document.querySelectorAll('.shop-item')) b.onclick = () => openShop(b.dataset.id);
+}
+
+async function openShop(id) { current = id; detail = await api(`/api/shops/${id}`); render(); loadList(); }
+
+function field(path, label, hint = '', placeholder = '') {
+  const value = path.split('.').reduce((o, k) => o?.[k], detail.shop) ?? '';
+  return `<div><label>${esc(label)}</label><input type="text" data-path="${path}" value="${esc(value)}" placeholder="${esc(placeholder)}">${hint ? `<div class="hint">${hint}</div>` : ''}</div>`;
+}
+
+function render() {
+  const { shop, check, files, envTemplate, isDefault } = detail;
+  const status = check.errors.length ? `<span class="pill bad">${check.errors.length} problem(s)</span>` : '<span class="pill ok">Ready to build</span>';
+  $('#main').innerHTML = `
+    <div class="head">
+      <span class="dot" style="width:40px;height:40px;border-radius:12px;background:${esc(shop.theme.primary)}"></span>
+      <h2>${esc(shop.name || shop.id)}</h2>${status}
+      <span style="flex:1"></span>
+      ${isDefault ? '<span class="pill ok">Default for local dev</span>' : '<button class="btn" id="makeDefault">Use for local dev</button>'}
+    </div>
+
+    ${check.errors.length || check.warnings.length ? `<div class="card"><h3>Checklist</h3><ul class="issues">
+      ${check.errors.map((e) => `<li class="e">✗ ${esc(e)}</li>`).join('')}${check.warnings.map((w) => `<li class="w">! ${esc(w)}</li>`).join('')}</ul></div>` : ''}
+
+    <div class="card"><h3>Shop details</h3>
+      <div class="grid">
+        ${field('name', 'Name (English)')}${field('nameHi', 'Name (Hindi)')}
+        ${field('tagline', 'Tagline (English)')}${field('taglineHi', 'Tagline (Hindi)')}
+        ${field('invoiceTagline', 'Invoice tagline')}
+        ${field('apiUrl', 'Backend API URL', 'This shop\'s own server, e.g. https://api.shop.in', 'https://')}
+      </div>
+      <h3 style="margin-top:18px">App ids</h3>
+      <div class="grid">
+        ${field('app.androidPackage', 'Android package', 'Must match the Android app in this shop\'s Firebase project. Do not change after publishing.')}
+        ${field('app.iosBundleId', 'iOS bundle id', 'Optional')}
+        ${field('app.scheme', 'Deep-link scheme')}
+        ${field('app.version', 'App version')}
+        ${field('expo.slug', 'Expo slug')}${field('expo.owner', 'Expo owner (account)')}
+        ${field('expo.projectId', 'Expo projectId', 'From <code>eas init</code> for this shop')}
+      </div>
+      <div class="row" style="margin-top:14px"><button class="btn primary" id="saveDetails">Save details</button></div>
+    </div>
+
+    <div class="card"><h3>Theme</h3>
+      <div class="theme-wrap">
+        <div>
+          <div class="swatches">${meta.themeKeys.map((k) => `
+            <div class="swatch"><input type="color" data-color="${k}" value="${esc(shop.theme[k])}">
+              <div style="flex:1"><label>${esc(THEME_LABELS[k] || k)}</label><input type="text" data-hex="${k}" value="${esc(shop.theme[k])}"></div></div>`).join('')}
+            <div class="swatch"><input type="color" data-color="splashBackground" value="${esc(shop.splashBackground)}">
+              <div style="flex:1"><label>Splash / icon background</label><input type="text" data-hex="splashBackground" value="${esc(shop.splashBackground)}"></div></div>
+          </div>
+          <div class="row" style="margin-top:14px"><button class="btn primary" id="saveTheme">Save theme</button></div>
+        </div>
+        <div class="phone" id="preview"></div>
+      </div>
+    </div>
+
+    <div class="card"><h3>Files</h3>
+      <div class="files">${files.map((f) => `
+        <div class="file">
+          <div class="name">${esc(f.name)} ${f.present ? (f.placeholder ? '<span class="pill warn">placeholder</span>' : '<span class="pill ok">✓</span>') : `<span class="pill ${f.required ? 'bad' : 'warn'}">${f.required ? 'required' : 'optional'}</span>`}</div>
+          <div class="hint" style="margin:0">${esc(f.label)}</div>
+          ${f.kind === 'png' ? `<div class="thumb">${f.present ? `<img src="/api/shops/${esc(shop.id)}/file?name=${encodeURIComponent(f.name)}&t=${Date.now()}" alt="">` : ''}</div>` : ''}
+          <input type="file" data-file="${esc(f.name)}" accept="${f.kind === 'png' ? 'image/png' : f.kind === 'json' ? '.json,application/json' : '.plist'}">
+        </div>`).join('')}
+      </div>
+    </div>
+
+    <div class="card"><h3>Backend server (.env)</h3>
+      <div class="hint" style="margin-bottom:8px">Every shop runs its own copy of <code>backend/</code> with its own database. Put these in the hosting dashboard and fill the secrets there (never in git).</div>
+      <pre id="env">${esc(envTemplate)}</pre>
+      <button class="btn" id="copyEnv">Copy</button>
+    </div>
+
+    <div class="card"><h3>Build app</h3>
+      <div class="row">
+        <div><label>Profile</label><select id="profile"><option value="preview">preview (APK to share)</option><option value="production">production (Play Store)</option></select></div>
+        <div><label>Platform</label><select id="platform"><option>android</option><option>ios</option><option>all</option></select></div>
+        <button class="btn primary" id="build" ${check.errors.length ? 'disabled title="Fix the checklist first"' : ''}>Start EAS build</button>
+      </div>
+      <div class="hint">Runs <code>eas build</code> in the cloud for this shop (you must be logged in: <code>npx eas-cli login</code>). Or from a terminal: <code>npm run shop -- build ${esc(shop.id)} preview android</code></div>
+      <pre id="log" ${job && job.shop === shop.id ? '' : 'hidden'}>${job && job.shop === shop.id ? esc(job.log) : ''}</pre>
+    </div>`;
+
+  bind();
+  drawPreview();
+}
+
+function themeFromInputs() {
+  const theme = {};
+  for (const k of meta.themeKeys) theme[k] = $(`[data-hex="${k}"]`).value.trim();
+  return { theme, splashBackground: $('[data-hex="splashBackground"]').value.trim() };
+}
+
+function drawPreview() {
+  const { theme: t, splashBackground } = themeFromInputs();
+  const name = esc(detail.shop.name || 'Shop');
+  $('#preview').innerHTML = `
+    <div style="background:${splashBackground};padding:10px;text-align:center"><img src="/api/shops/${esc(detail.shop.id)}/file?name=assets/logo.png" style="height:48px" alt="" onerror="this.remove()"></div>
+    <div class="p-top" style="background:${t.primary}"><div style="font-size:11px;color:${t.onPrimaryMuted}">Welcome to</div><b>${name}</b></div>
+    <div class="p-body" style="background:#fff">
+      <div class="p-card" style="background:linear-gradient(135deg,${t.card},${t.cardDeep});border-color:${t.cardBorder}">
+        <div style="color:${t.navy};font-weight:700;font-size:13px">Upload prescription</div>
+        <div style="color:${t.secondary};font-size:11px">Get medicines delivered</div>
+      </div>
+      <div style="color:${t.text};font-size:12px">Order #1024 <span style="color:${t.muted}">· today</span></div>
+      <div class="p-row"><span style="color:${t.green};background:${t.greenBg};padding:1px 6px;border-radius:6px">Delivered</span><span style="color:${t.amber};background:${t.amberBg};padding:1px 6px;border-radius:6px">Pending</span></div>
+      <div class="p-row" style="color:${t.text}">Notifications <span class="p-toggle on" style="background:${t.primary}"></span></div>
+      <div class="p-row" style="color:${t.text}">SMS <span class="p-toggle off" style="background:${t.toggleOff}"></span></div>
+      <div style="height:6px;border-radius:3px;margin-top:10px;background:linear-gradient(90deg,${t.primary},${t.primaryLight})"></div>
+      <div class="p-btn" style="background:${t.primary}">Place order</div>
+      <div style="color:${t.primaryDark};font-size:11px;text-align:center;margin-top:8px;font-weight:600">${esc(detail.shop.tagline)}</div>
+    </div>`;
+}
+
+function bind() {
+  const id = detail.shop.id;
+  $('#makeDefault')?.addEventListener('click', async () => { detail = await api(`/api/shops/${id}/default`, { method: 'POST' }); render(); loadList(); toast('Local dev now uses this shop'); });
+
+  $('#saveDetails').onclick = async () => {
+    const patch = { app: {}, expo: {} };
+    for (const input of document.querySelectorAll('[data-path]')) {
+      const [a, b] = input.dataset.path.split('.');
+      if (b) patch[a][b] = input.value; else patch[a] = input.value;
+    }
+    try { detail = await api(`/api/shops/${id}`, { method: 'PUT', json: patch }); render(); loadList(); toast('Details saved'); } catch (e) { toast(e.message); }
+  };
+
+  for (const picker of document.querySelectorAll('[data-color]')) {
+    const text = $(`[data-hex="${picker.dataset.color}"]`);
+    picker.oninput = () => { text.value = picker.value.toUpperCase(); drawPreview(); };
+    text.oninput = () => { if (/^#[0-9a-f]{6}$/i.test(text.value.trim())) { picker.value = text.value.trim(); drawPreview(); } };
+  }
+  $('#saveTheme').onclick = async () => {
+    try { detail = await api(`/api/shops/${id}`, { method: 'PUT', json: themeFromInputs() }); render(); loadList(); toast('Theme saved'); } catch (e) { toast(e.message); }
+  };
+
+  for (const input of document.querySelectorAll('[data-file]')) {
+    input.onchange = async () => {
+      const file = input.files[0];
+      if (!file) return;
+      try { detail = await api(`/api/shops/${id}/file?name=${encodeURIComponent(input.dataset.file)}`, { method: 'PUT', body: file }); render(); loadList(); toast(`${input.dataset.file} uploaded`); }
+      catch (e) { toast(e.message); input.value = ''; }
+    };
+  }
+
+  $('#copyEnv').onclick = () => navigator.clipboard.writeText(detail.envTemplate).then(() => toast('Copied'));
+
+  $('#build').onclick = async () => {
+    try {
+      job = await api(`/api/shops/${id}/build`, { method: 'POST', json: { profile: $('#profile').value, platform: $('#platform').value } });
+      $('#log').hidden = false;
+      pollJob();
+    } catch (e) { toast(e.message); }
+  };
+}
+
+async function pollJob() {
+  if (!job) return;
+  job = await api(`/api/jobs/${job.id}`);
+  const log = $('#log');
+  if (log && detail.shop.id === job.shop) { log.textContent = `$ ${job.command}\n\n${job.log}`; log.scrollTop = log.scrollHeight; }
+  if (job.status === 'running') setTimeout(pollJob, 2000); else toast(job.status === 'done' ? 'Build submitted to EAS: see the link in the log' : 'Build command failed: see the log');
+}
+
+$('#newBtn').onclick = () => { $('#newForm').reset(); delete $('#newForm [name=id]').dataset.touched; $('#newDialog').showModal(); };
+$('#newForm [name=name]').oninput = (e) => {
+  const idInput = $('#newForm [name=id]');
+  if (!idInput.dataset.touched) idInput.value = e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 42);
+};
+$('#newForm [name=id]').oninput = (e) => { e.target.dataset.touched = '1'; };
+$('#newDialog').addEventListener('close', async () => {
+  if ($('#newDialog').returnValue !== 'ok') return;
+  const data = Object.fromEntries(new FormData($('#newForm')));
+  try { detail = await api('/api/shops', { method: 'POST', json: data }); current = detail.shop.id; render(); loadList(); toast('Shop created. Upload its images and Firebase files next.'); }
+  catch (e) { toast(e.message); }
+});
+
+(async () => { meta = await api('/api/meta'); await loadList(); const first = document.querySelector('.shop-item'); if (first) openShop(first.dataset.id); })();
+</script>
+</body>
+</html>

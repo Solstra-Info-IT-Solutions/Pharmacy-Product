@@ -10,7 +10,7 @@ export const pool = new pg.Pool({
   ssl: config.databaseCa ? { ca: config.databaseCa, rejectUnauthorized: true } : { rejectUnauthorized: false },
   max: 10, idleTimeoutMillis: 5 * 60_000, // keep connections warm: opening one costs ~0.4 s (TLS + pooler login)
    connectionTimeoutMillis: 8_000, keepAlive: true,
-  statement_timeout: 15_000, application_name: 'kmh-api',
+  statement_timeout: 15_000, application_name: `${config.shop.id}-api`.slice(0, 63),
 });
 
 // An idle connection dropped by the pooler must not crash the process; the pool simply opens a new one next time.

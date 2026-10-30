@@ -14,3 +14,7 @@ id_rsa*
 kamal
 kamal.pub
 .env
+
+# A shop backend's real .env never goes into its module
+shops/*/backend.env
+shops/*/*.env

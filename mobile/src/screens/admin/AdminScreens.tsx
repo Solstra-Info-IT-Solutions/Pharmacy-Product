@@ -30,6 +30,7 @@ import { guessMime, isBlockedName, isImageMime } from '../../fileKinds';
 import { useContentStyle, useLayout } from '../../layout';
 import type { AdminStackParamList, AdminTabParamList } from '../../navigation/types';
 import { useSession } from '../../store/session';
+import { shop } from '../../shop';
 import { colors, radius, spacing, type } from '../../theme';
 import { formatDate, formatDateTime, formatMoney, statusTone , formatDelivery } from '../../utils';
 
@@ -930,7 +931,7 @@ export function PaymentDetailsScreen({ navigation }: NativeStackScreenProps<Admi
   const upiOk = /^[\w.\-]{2,}@[\w.\-]{2,}$/.test(f.upiId.trim());
   const ifscOk = /^[A-Za-z]{4}0[A-Za-z0-9]{6}$/.test(f.bankIfsc.trim());
   const accOk = /^\d{6,20}$/.test(f.bankAccountNumber.trim());
-  const uri = upiOk ? `upi://pay?pa=${encodeURIComponent(f.upiId.trim())}&pn=${encodeURIComponent(f.upiName.trim() || 'Kamal Medical Hall')}&cu=INR` : null;
+  const uri = upiOk ? `upi://pay?pa=${encodeURIComponent(f.upiId.trim())}&pn=${encodeURIComponent(f.upiName.trim() || shop.name)}&cu=INR` : null;
   const save = async () => {
     if ((f.upiId && !upiOk) || (f.bankIfsc && !ifscOk) || (f.bankAccountNumber && !accOk)) { setErr(t('admin.paymentInvalid')); tick('error'); return; }
     setBusy(true); setErr('');

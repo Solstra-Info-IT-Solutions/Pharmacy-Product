@@ -1,9 +1,8 @@
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNetworkStatus } from '../core/network/status';
+import { shop, shopLogo as logo } from '../shop';
 import { colors, fonts } from '../theme';
-
-const logo = require('../../assets/logo.png');
 
 /** Plain brand screen shown while fonts, language and the saved session load. (No animation.) */
 export function AnimatedSplash({ tagline }: { tagline: string }) {
@@ -11,7 +10,7 @@ export function AnimatedSplash({ tagline }: { tagline: string }) {
   const slow = useNetworkStatus((n) => n.slow);
   return (
     <View style={s.root} pointerEvents="none">
-      <Image source={logo} style={s.logo} resizeMode="contain" accessibilityLabel="Kamal Medical Hall" />
+      <Image source={logo} style={s.logo} resizeMode="contain" accessibilityLabel={shop.name} />
       <Text style={s.tagline}>{tagline}</Text>
       {slow ? <Text style={s.waking}>{t('common.waking')}</Text> : null}
     </View>

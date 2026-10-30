@@ -77,7 +77,7 @@ export function ChatScreen({ navigation, route }: NativeStackScreenProps<Custome
               <View style={[s.bubble, m.role === 'customer' ? s.mine : m.role === 'bot' ? s.bot : s.theirs]}>
                 {m.role === 'bot' ? <Text style={[type.small, { color: colors.primary, marginBottom: 2 }]}>{t('chat.assistant')}</Text> : m.role === 'admin' ? <Text style={[type.small, { color: colors.secondary, marginBottom: 2 }]}>{t('chat.shopkeeper')}</Text> : null}
                 <Text style={[type.body, { color: m.role === 'customer' ? colors.white : colors.text }]}>{m.body}</Text>
-                <Text style={[type.small, { color: m.role === 'customer' ? '#DCE9FF' : colors.muted, alignSelf: 'flex-end', marginTop: 2, fontSize: 11 }]}>{clock(m.createdAt)}</Text>
+                <Text style={[type.small, { color: m.role === 'customer' ? colors.onPrimaryMuted : colors.muted, alignSelf: 'flex-end', marginTop: 2, fontSize: 11 }]}>{clock(m.createdAt)}</Text>
               </View>
             </View>
           ))}

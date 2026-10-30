@@ -104,7 +104,7 @@ export function RevenueScreen() {
             <View style={[s.rank, n === 0 && { backgroundColor: colors.amber }]}><Text style={[type.smallMedium, { color: colors.white }]}>{n + 1}</Text></View>
             <View style={{ flex: 1 }}>
               <View style={s.rowBetween}><Text style={[type.bodyMedium, { color: colors.text, flex: 1 }]} numberOfLines={2}>{i.name}</Text><Text style={[type.smallMedium, { color: colors.secondary }]}>{t('admin.revQty', { count: i.quantity })}</Text></View>
-              <View style={s.track}><LinearGradient colors={[colors.primary, '#7AB8F5']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={[s.trackFill, { width: `${Math.max(6, Math.round((i.quantity / topQty) * 100))}%` }]} /></View>
+              <View style={s.track}><LinearGradient colors={[colors.primary, colors.primaryLight]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={[s.trackFill, { width: `${Math.max(6, Math.round((i.quantity / topQty) * 100))}%` }]} /></View>
             </View>
           </View>
         ))}
@@ -267,7 +267,7 @@ export function AdminChatScreen({ navigation, route }: NativeStackScreenProps<Ad
               <View style={[s.bubble, m.role === 'admin' ? s.mine : m.role === 'bot' ? s.bot : s.theirs]}>
                 {m.role === 'bot' ? <Text style={[type.small, { color: colors.primary }]}>{t('chat.assistant')}</Text> : null}
                 <Text style={[type.body, { color: m.role === 'admin' ? colors.white : colors.text }]}>{m.body}</Text>
-                <Text style={[{ fontSize: 11, alignSelf: 'flex-end', marginTop: 2 }, { color: m.role === 'admin' ? '#DCE9FF' : colors.muted }]}>{clock(m.createdAt)}</Text>
+                <Text style={[{ fontSize: 11, alignSelf: 'flex-end', marginTop: 2 }, { color: m.role === 'admin' ? colors.onPrimaryMuted : colors.muted }]}>{clock(m.createdAt)}</Text>
               </View>
             </View>
           ))}

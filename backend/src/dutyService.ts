@@ -3,6 +3,7 @@ import { conflict } from './http.js';
 import { notifyMany } from './notify.js';
 import { setPartnerState, TODAY_IST } from './partnerState.js';
 import { emitAdmins } from './realtime.js';
+import { config } from './config.js';
 
 export type DutyStatus = 'on_duty' | 'off_duty' | 'on_break' | 'leave';
 
@@ -81,7 +82,7 @@ export async function closeStore(c: Queryable) {
     await setPartnerState(c, id, 'off');
   }
   const customers = (await c.query("select id from users where role = 'customer'")).rows.map((r) => r.id as string);
-  await notifyMany(customers, 'store_closed', 'Store closed', 'Kamal Medical Hall is closed right now and is not taking new orders. We will let you know when we reopen.', c);
+  await notifyMany(customers, 'store_closed', 'Store closed', `${config.shop.name} is closed right now and is not taking new orders. We will let you know when we reopen.`, c);
   await notifyMany(paid, 'store_closed', 'Store closed today', 'The store is closed today. Your day is marked as paid leave.', c);
   const worked = partners.map((p) => p.id).filter((id) => !paid.includes(id));
   await notifyMany(worked, 'store_closed', 'Store closed', 'The store is closed. Your duty for today has ended.', c);
@@ -93,7 +94,7 @@ export async function reopenStore(c: Queryable) {
   const back = (await c.query(`delete from attendance where day = ${TODAY_IST} and status = 'paid_leave' returning partner_id`)).rows.map((r) => r.partner_id as string);
   const partners = (await c.query('select user_id as id from delivery_partners where active')).rows.map((r) => r.id as string);
   const customers = (await c.query("select id from users where role = 'customer'")).rows.map((r) => r.id as string);
-  await notifyMany(customers, 'store_open', 'We are open', 'Kamal Medical Hall is open again. You can place your order now.', c);
+  await notifyMany(customers, 'store_open', 'We are open', `${config.shop.name} is open again. You can place your order now.`, c);
   await notifyMany(partners, 'store_open', 'Store reopened', back.length ? 'The store is open again. Start your duty to receive deliveries.' : 'The store is open again.', c);
   emitAdmins('partner:update', {});
 }

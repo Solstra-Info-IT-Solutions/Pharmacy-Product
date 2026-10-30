@@ -1,4 +1,5 @@
 import { pool } from './db.js';
+import { config } from './config.js';
 
 /**
  * Best-effort address -> coordinates using OpenStreetMap Nominatim (no API key needed; fine for a single store's volume).
@@ -9,7 +10,7 @@ export async function geocode(query: string): Promise<{ lat: number; lng: number
   const timer = setTimeout(() => controller.abort(), 4000);
   try {
     const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=in&q=${encodeURIComponent(query)}`;
-    const res = await fetch(url, { signal: controller.signal, headers: { 'User-Agent': 'KamalMedicalHall/1.0 (store delivery app)' } });
+    const res = await fetch(url, { signal: controller.signal, headers: { 'User-Agent': `${config.shop.id}/1.0 (store delivery app)` } });
     if (!res.ok) return null;
     const [hit] = (await res.json()) as Array<{ lat: string; lon: string }>;
     return hit ? { lat: Number(hit.lat), lng: Number(hit.lon) } : null;

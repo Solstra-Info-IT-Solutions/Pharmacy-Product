@@ -4,6 +4,7 @@ import { emitOrder } from './realtime.js';
 import { conflict, notFound } from './http.js';
 import { previewUrls, signedBillUrl, signedPrescriptionUrl, type ResourceType } from './services.js';
 import type { AuthUser } from './auth.js';
+import { config } from './config.js';
 
 export type OrderStatus = 'requested' | 'quoted' | 'accepted' | 'awaiting_payment' | 'ready_to_dispatch' | 'out_for_delivery' | 'delivered' | 'rejected' | 'cancelled';
 
@@ -66,7 +67,7 @@ export async function loadOrder(id: string, viewer: AuthUser, db: Queryable = po
       proof: col.proof_public_id ? { url: signedPrescriptionUrl(col.proof_public_id, col.proof_mime, col.proof_resource_type), mimeType: col.proof_mime } : null,
     } : null,
     history: history.rows, deliveredAt, bill, review: rv ? { id: rv.id, rating: rv.rating, status: rv.status } : null,
-    store: { name: 'Kamal Medical Hall', address: store?.address ?? null, phone: store?.phone ?? null },
+    store: { name: config.shop.name, address: store?.address ?? null, phone: store?.phone ?? null },
     reviewedBy: staffView ? o.reviewed_by : undefined,
     customer: staffView ? { id: o.customer_id, name: o.customer_name, phone: phoneVisible ? o.customer_phone : null } : undefined,
     partner: o.partner_id && viewer.role !== 'customer' ? { id: o.partner_id, name: o.partner_name, phone: o.partner_phone } : o.partner_id && o.partner_accepted_at ? { id: o.partner_id, name: o.partner_name } : null,

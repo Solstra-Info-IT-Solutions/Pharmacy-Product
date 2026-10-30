@@ -1,4 +1,4 @@
-/* Web push for the Kamal Medical Hall website (admin panel).
+/* Web push for the shop website (admin panel).
  * Firebase Cloud Messaging delivers the message here; this worker shows it and, when it is clicked, brings the site
  * to the front and opens the right page. While the site is open and in front, the in-app banner shows the
  * notification instead, so nothing is shown twice. Plain service worker: no Firebase code is needed here. */
@@ -10,13 +10,13 @@ const windows = () => self.clients.matchAll({ type: 'window', includeUncontrolle
 
 self.addEventListener('push', (event) => {
   let msg = {};
-  try { msg = event.data ? event.data.json() : {}; } catch (e) { msg = { notification: { title: 'Kamal Medical Hall', body: event.data ? event.data.text() : '' } }; }
+  try { msg = event.data ? event.data.json() : {}; } catch (e) { msg = { notification: { title: 'New notification', body: event.data ? event.data.text() : '' } }; }
   const n = msg.notification || {};
   const data = msg.data || {};
   event.waitUntil(windows().then((list) => {
     const inFront = list.some((c) => c.visibilityState === 'visible' && c.focused);
     if (inFront) return undefined; // the open site shows its own banner
-    return self.registration.showNotification(n.title || data.title || 'Kamal Medical Hall', {
+    return self.registration.showNotification(n.title || data.title || 'New notification', {
       body: n.body || data.body || '',
       icon: n.icon || '/notification-icon.png',
       badge: '/notification-icon.png',

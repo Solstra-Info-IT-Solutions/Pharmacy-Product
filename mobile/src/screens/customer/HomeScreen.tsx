@@ -54,7 +54,7 @@ export function HomeScreen(_props: BottomTabScreenProps<CustomerTabParamList, 'H
         <AnnouncementSlider items={slides} onOpen={(a) => nav.navigate('Announcement', { id: a.id })} />
 
         <Tap onPress={() => nav.navigate('Upload')} style={s.actionShadow} accessibilityRole="button" accessibilityLabel={t('home.uploadTitle')}>
-          <LinearGradient colors={[colors.card, '#DCEBFB']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={s.action}>
+          <LinearGradient colors={[colors.card, colors.cardDeep]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={s.action}>
             <View style={s.iconPuck}><Icon name="camera" size={30} color={colors.primary} /></View>
             <View style={{ flex: 1 }}>
               <Text style={[type.h3, { color: colors.text }]}>{t('home.uploadTitle')}</Text>
